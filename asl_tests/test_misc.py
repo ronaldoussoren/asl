@@ -17,5 +17,14 @@ class TestMiscFunctions (unittest.TestCase):
         self.assertIs(asl.asl_new, asl.aslmsg)
         self.assertIs(asl.asl_open, asl.aslclient)
 
+    @unittest.skipUnless(platform.mac_ver()[0] >= "10.7", "Requires OSX 10.7")
+    def test_create_auxiliary_file(self):
+        self.fail()
+
+    @unittest.skipUnless(platform.mac_ver()[0] >= "10.7", "Requires OSX 10.7")
+    def test_log_auxiliary_location(self):
+        self.fail()
+
+
 if __name__ == "__main__":
     unittest.main()
