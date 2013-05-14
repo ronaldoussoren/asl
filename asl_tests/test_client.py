@@ -150,6 +150,13 @@ class TestASLClient (unittest.TestCase):
         msg[asl.ASL_KEY_FACILITY] = "com.apple.console"
         cli.log_descriptor(msg, asl.ASL_LEVEL_NOTICE, fd, asl.ASL_LOG_DESCRIPTOR_WRITE)
 
+    @unittest.skipUnless(platform.mac_ver()[0] < "10.8", "Requires OSX 10.8")
+    def test_no_redirection(self):
+        cli = asl.aslclient("ident", "facility", 0)
+        self.assertIsInstance(cli, asl.aslclient)
+
+        self.assertFalse(hasattr(cli, 'log_descriptor'))
+
     @unittest.skipUnless(platform.mac_ver()[0] >= "10.7", "Requires OSX 10.7")
     def test_open_from_file(self):
         try:
@@ -165,6 +172,10 @@ class TestASLClient (unittest.TestCase):
         finally:
             if os.path.exists("asl.log"):
                 os.unlink("asl.log")
+
+    @unittest.skipUnless(platform.mac_ver()[0] < "10.7", "Requires OSX 10.7")
+    def test_no_open_from_file(self):
+        self.assertFalse(hasattr(asl, 'open_from_file'))
 
 if __name__ == "__main__":
     unittest.main()

@@ -1,4 +1,5 @@
 import unittest
+import platform
 
 import asl
 
@@ -16,6 +17,13 @@ class TestMiscFunctions (unittest.TestCase):
     def test_aliases(self):
         self.assertIs(asl.asl_new, asl.aslmsg)
         self.assertIs(asl.asl_open, asl.aslclient)
+
+
+    @unittest.skipUnless(platform.mac_ver()[0] < "10.7", "Requires OSX 10.7")
+    def test_no_aux(self):
+        self.assertFalse(hasattr(asl, 'create_auxiliary_file'))
+        self.assertFalse(hasattr(asl, 'close_auxiliary_file'))
+        self.assertFalse(hasattr(asl, 'log_auxiliary_location'))
 
     @unittest.skipUnless(platform.mac_ver()[0] >= "10.7", "Requires OSX 10.7")
     def test_create_auxiliary_file(self):
