@@ -1,0 +1,11 @@
+doc/_build
+asl.egg-info
+build
+dist
+
+syntax: glob
+*.dSYM
+*.pyc
+*.pyo
+*.swp
+*.so
