@@ -4,6 +4,8 @@ import asl
 import os
 
 
+LEVELS=list(sorted(asl.STRING2LEVEL, key=lambda l: asl.STRING2LEVEL[l]))
+
 parser = argparse.ArgumentParser(description="ASL command-line interface", prog=__package__)
 parser.add_argument('--version', action='version', version='%(prog)s ' + asl.__version__)
 
@@ -19,8 +21,8 @@ parser_consolelog.add_argument(
 parser_consolelog.add_argument(
     '-l', '--level',
     action='store', metavar='LEVEL',
-    default=asl.ASL_STRING_NOTICE, choices=list(asl.STRING2LEVEL.keys()),
-    help='Logging level (default: %(default)s)'
+    default=asl.ASL_STRING_NOTICE, choices=LEVELS,
+    help='Logging level (default: %(default)s, valid values: %(choices)s)'
 )
 parser_consolelog.add_argument('message', help='The message', metavar='MESSAGE', nargs='+')
 
