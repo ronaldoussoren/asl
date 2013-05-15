@@ -224,6 +224,7 @@ ASL messages
 Utility functions
 -----------------
 
+
 .. function:: ASL_FILTER_MASK(level)
 
    :param level: A message priority level
@@ -338,6 +339,18 @@ used as the value for the :data:`ASL_KEY_LEVEL` key in
 .. data::  ASL_STRING_INFO
 
 .. data::  ASL_STRING_DEBUG
+
+
+Priority translations
+.....................
+
+.. data:: LEVEL2STRING
+
+   A directionary mapping numeric levels to the equivalent string value
+
+.. data:: STRING2LEVEL
+
+   A directionary mapping string levels to the equivalent integer value
 
 
 Attribute matching operations
