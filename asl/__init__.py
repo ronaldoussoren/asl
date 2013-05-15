@@ -11,11 +11,13 @@ from ._constants import *
 asl_open = aslclient
 asl_new = aslmsg
 
+
 def ASL_FILTER_MASK(level):
     return 1 << level
 
+
 def ASL_FILTER_MASK_UPTO(level):
-    return (1 << (level+1)) - 1
+    return (1 << (level + 1)) - 1
 
 LEVEL2STRING = {
     ASL_LEVEL_EMERG: ASL_STRING_EMERG,

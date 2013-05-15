@@ -1,7 +1,14 @@
 import unittest
 import platform
+import os
+import sys
 
 import asl
+
+try:
+    long
+except NameError:
+    long = int
 
 class TestMiscFunctions (unittest.TestCase):
     def test_mask(self):
@@ -27,11 +34,92 @@ class TestMiscFunctions (unittest.TestCase):
 
     @unittest.skipUnless(platform.mac_ver()[0] >= "10.7", "Requires OSX 10.7")
     def test_create_auxiliary_file(self):
-        self.fail()
+        msg = asl.aslmsg(asl.ASL_TYPE_MSG)
+        msg[asl.ASL_KEY_MSG] = 'hello world'
+
+        fd = asl.create_auxiliary_file(msg, 'title', None)
+        self.assertIsInstance(fd, (int, long))
+        os.write(fd, b'hello world\n')
+        asl.close_auxiliary_file(fd)
+
+        self.assertRaises(OSError, os.write, fd, b'Done')
+
+        msg = asl.aslmsg(asl.ASL_TYPE_MSG)
+        msg[asl.ASL_KEY_MSG] = 'hello world'
+
+        fd = asl.create_auxiliary_file(msg, 'title', 'public.text')
+        self.assertIsInstance(fd, (int, long))
+        os.write(fd, b'hello world\n')
+        asl.close_auxiliary_file(fd)
+
+        msg = asl.aslmsg(asl.ASL_TYPE_MSG)
+        msg[asl.ASL_KEY_MSG] = 'hello world'
+
+        self.assertRaises(TypeError, asl.create_auxiliary_file, 'foo', 'title', None)
+        self.assertRaises(TypeError, asl.create_auxiliary_file, None, 42, None)
+        self.assertRaises(TypeError, asl.create_auxiliary_file, None, 'title', 42)
+
+    @unittest.skipUnless(platform.mac_ver()[0] >= "10.7" and sys.version_info[0] == 3, "Requires OSX 10.7, Python 3 test")
+    def test_no_bytes(self):
+        msg = asl.aslmsg(asl.ASL_TYPE_MSG)
+        msg[asl.ASL_KEY_MSG] = 'hello world'
+        self.assertRaises(TypeError, asl.create_auxiliary_file, None, b'title', None)
+        self.assertRaises(TypeError, asl.create_auxiliary_file, None, 'title', b'public.text')
+
+        msg = asl.aslmsg(asl.ASL_TYPE_MSG)
+        msg[asl.ASL_KEY_MSG] = 'hello world'
+        self.assertRaises(TypeError, asl.log_auxiliary_location, msg, b'title', 'public.txt', 'http://www.python.org/')
+        self.assertRaises(TypeError, asl.log_auxiliary_location, msg, 'title', b'public.txt', 'http://www.python.org/')
+        self.assertRaises(TypeError, asl.log_auxiliary_location, msg, 'title', 'public.txt', b'http://www.python.org/')
+
+    @unittest.skipUnless(platform.mac_ver()[0] >= "10.7" and sys.version_info[0] == 2, "Requires OSX 10.7, Python 2 test")
+    def test_with_unicode(self):
+        msg = asl.aslmsg(asl.ASL_TYPE_MSG)
+        msg[asl.ASL_KEY_MSG] = 'hello world'
+
+        fd = asl.create_auxiliary_file(msg, b'title'.decode('utf-8'), 'public.text')
+        self.assertIsInstance(fd, (int, long))
+        os.write(fd, b'hello world\n')
+        asl.close_auxiliary_file(fd)
+
+        msg = asl.aslmsg(asl.ASL_TYPE_MSG)
+        msg[asl.ASL_KEY_MSG] = 'hello world'
+
+        fd = asl.create_auxiliary_file(msg, 'title', b'public.text'.decode('utf-8'))
+        self.assertIsInstance(fd, (int, long))
+        os.write(fd, b'hello world\n')
+        asl.close_auxiliary_file(fd)
+
+        msg = asl.aslmsg(asl.ASL_TYPE_MSG)
+        msg[asl.ASL_KEY_MSG] = 'hello world'
+        asl.log_auxiliary_location(msg, b'title'.decode('utf-8'), 'public.text', 'http://www.python.org/')
+
+        msg = asl.aslmsg(asl.ASL_TYPE_MSG)
+        msg[asl.ASL_KEY_MSG] = 'hello world'
+        asl.log_auxiliary_location(msg, 'title', b'public.text'.decode('utf-8'), 'http://www.python.org/')
+
+        msg = asl.aslmsg(asl.ASL_TYPE_MSG)
+        msg[asl.ASL_KEY_MSG] = 'hello world'
+        asl.log_auxiliary_location(msg, 'title', 'public.text', b'http://www.python.org/'.decode('utf-8'))
+
 
     @unittest.skipUnless(platform.mac_ver()[0] >= "10.7", "Requires OSX 10.7")
     def test_log_auxiliary_location(self):
-        self.fail()
+        msg = asl.aslmsg(asl.ASL_TYPE_MSG)
+        msg[asl.ASL_KEY_MSG] = 'hello world'
+        asl.log_auxiliary_location(msg, 'title', 'public.text', 'http://www.python.org/')
+
+        msg = asl.aslmsg(asl.ASL_TYPE_MSG)
+        msg[asl.ASL_KEY_MSG] = 'hello world'
+        asl.log_auxiliary_location(msg, 'title', None, 'http://www.python.org/')
+
+        msg = asl.aslmsg(asl.ASL_TYPE_MSG)
+        msg[asl.ASL_KEY_MSG] = 'hello world'
+        self.assertRaises(TypeError, asl.log_auxiliary_location, msg, 'title', None, None)
+        self.assertRaises(TypeError, asl.log_auxiliary_location, msg, 'title', None, 42)
+        self.assertRaises(TypeError, asl.log_auxiliary_location, msg, 'title', 42, 'http://www.python.org')
+        self.assertRaises(TypeError, asl.log_auxiliary_location, msg, 42, None, 'http://www.python.org')
+
 
 
 if __name__ == "__main__":

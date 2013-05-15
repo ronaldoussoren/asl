@@ -8,8 +8,10 @@ The Apple System Log facility is a logging API with a simular
 goal to the classic unix syslog API, but with a richer interface
 and with an API for querying the logging system.
 
-See Apple's manual page for the C API for more information on how
-to use this module.
+There is more information on the ASL library in `Apple's manual
+page for ASL`__
+
+.. __: https://developer.apple.com/library/mac/documentation/Darwin/Reference/ManPages/man3/asl.3.html
 
 .. note::
 
@@ -299,6 +301,8 @@ Constants
 Message priority levels
 .......................
 
+The levels are listed from highest to lowest priority.
+
 .. data:: ASL_LEVEL_EMERG
 
 .. data::  ASL_LEVEL_ALERT
@@ -356,39 +360,72 @@ Priority translations
 Attribute matching operations
 .............................
 
-
 Modifiers
 ~~~~~~~~~
 
 .. data::  ASL_QUERY_OP_CASEFOLD
 
+   String comparisons are case folded
+
 .. data::  ASL_QUERY_OP_PREFIX
+
+   The match is done on a leading substring
 
 .. data::  ASL_QUERY_OP_SUFFIX
 
+   The match is done on a trailing  substring
+
 .. data::  ASL_QUERY_OP_SUBSTRING
+
+   Match any substring
 
 .. data::  ASL_QUERY_OP_NUMERIC
 
-.. data::  ASL_QUERY_OP_REGEX
+   Perform the comparison after converting the value
+   to an integer using the C function ``atoi``.
+
 
 
 Operators
 ~~~~~~~~~
 
+.. data::  ASL_QUERY_OP_REGEX
+
+   Perform a regular expression match using the
+   `regex library`__. When the :data:`ALS_QUERY_OP_CASEFOLD`
+   modifier is specified the regular expression is compiled
+   case insensitive (*REG_ICASE*). All other modifiers
+   are ignored.
+
+.. __: https://developer.apple.com/library/mac/documentation/Darwin/Reference/ManPages/man3/regex.3.html
+
 .. data::  ASL_QUERY_OP_EQUAL
+
+   Value equality
 
 .. data::  ASL_QUERY_OP_GREATER
 
+   Value greater than
+
 .. data::  ASL_QUERY_OP_GREATER_EQUAL
+
+   Value greater than or equal to
 
 .. data::  ASL_QUERY_OP_LESS
 
+   Value less than
+
 .. data::  ASL_QUERY_OP_LESS_EQUAL
+
+   Value less than or equal to
 
 .. data::  ASL_QUERY_OP_NOT_EQUAL
 
+   Value not equal
+
 .. data::  ASL_QUERY_OP_TRUE
+
+   Always true. Use this to test if an attribute is present.
 
 
 Standard message attributes
