@@ -3,7 +3,7 @@ Bindings to the Apple System Log facility.
 """
 from __future__ import absolute_import
 
-__version__ = "0.9"
+__version__ = "1.0"
 
 from ._asl import *
 from ._constants import *

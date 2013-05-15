@@ -19,9 +19,8 @@ def get_version():
         os.path.abspath(__file__))), "setup.cfg")
     for ln in open(setup_py, 'rU'):
         ln = ln.strip()
-    if ln.startswith('version = '):
-        return ln.split("=")[1].strip()
-
+        if ln.startswith('version = '):
+            return ln.split("=")[1].strip()
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
