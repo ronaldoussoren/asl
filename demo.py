@@ -51,7 +51,7 @@ class ASLConsoleHandler (logging.Handler):
 
 logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
 root = logging.getLogger()
-print root
+print(root)
 root.addHandler(ASLConsoleHandler())
 
 root.warning("test me")
