@@ -1,6 +1,11 @@
 Release history
 ===============
 
+asl 1.0.2
+---------
+
+* Fixes some packaging issues
+
 asl 1.0
 -------
 
