@@ -2,6 +2,7 @@ import unittest
 import platform
 import os
 import sys
+from distutils.version import LooseVersion
 
 import asl
 
@@ -26,13 +27,13 @@ class TestMiscFunctions (unittest.TestCase):
         self.assertIs(asl.asl_open, asl.aslclient)
 
 
-    @unittest.skipUnless(platform.mac_ver()[0] < "10.7", "Requires OSX 10.7")
+    @unittest.skipUnless(LooseVersion(platform.mac_ver()[0]) < LooseVersion("10.7"), "Requires OSX 10.7")
     def test_no_aux(self):
         self.assertFalse(hasattr(asl, 'create_auxiliary_file'))
         self.assertFalse(hasattr(asl, 'close_auxiliary_file'))
         self.assertFalse(hasattr(asl, 'log_auxiliary_location'))
 
-    @unittest.skipUnless(platform.mac_ver()[0] >= "10.7", "Requires OSX 10.7")
+    @unittest.skipUnless(LooseVersion(platform.mac_ver()[0]) >= LooseVersion("10.7"), "Requires OSX 10.7")
     def test_create_auxiliary_file(self):
         msg = asl.aslmsg(asl.ASL_TYPE_MSG)
         msg[asl.ASL_KEY_MSG] = 'hello world'
@@ -59,7 +60,7 @@ class TestMiscFunctions (unittest.TestCase):
         self.assertRaises(TypeError, asl.create_auxiliary_file, None, 42, None)
         self.assertRaises(TypeError, asl.create_auxiliary_file, None, 'title', 42)
 
-    @unittest.skipUnless(platform.mac_ver()[0] >= "10.7" and sys.version_info[0] == 3, "Requires OSX 10.7, Python 3 test")
+    @unittest.skipUnless(LooseVersion(platform.mac_ver()[0]) >= LooseVersion("10.7") and sys.version_info[0] == 3, "Requires OSX 10.7, Python 3 test")
     def test_no_bytes(self):
         msg = asl.aslmsg(asl.ASL_TYPE_MSG)
         msg[asl.ASL_KEY_MSG] = 'hello world'
@@ -72,7 +73,7 @@ class TestMiscFunctions (unittest.TestCase):
         self.assertRaises(TypeError, asl.log_auxiliary_location, msg, 'title', b'public.txt', 'http://www.python.org/')
         self.assertRaises(TypeError, asl.log_auxiliary_location, msg, 'title', 'public.txt', b'http://www.python.org/')
 
-    @unittest.skipUnless(platform.mac_ver()[0] >= "10.7" and sys.version_info[0] == 2, "Requires OSX 10.7, Python 2 test")
+    @unittest.skipUnless(LooseVersion(platform.mac_ver()[0]) >= LooseVersion("10.7") and sys.version_info[0] == 2, "Requires OSX 10.7, Python 2 test")
     def test_with_unicode(self):
         msg = asl.aslmsg(asl.ASL_TYPE_MSG)
         msg[asl.ASL_KEY_MSG] = 'hello world'
@@ -103,7 +104,7 @@ class TestMiscFunctions (unittest.TestCase):
         asl.log_auxiliary_location(msg, 'title', 'public.text', b'http://www.python.org/'.decode('utf-8'))
 
 
-    @unittest.skipUnless(platform.mac_ver()[0] >= "10.7", "Requires OSX 10.7")
+    @unittest.skipUnless(LooseVersion(platform.mac_ver()[0]) >= LooseVersion("10.7"), "Requires OSX 10.7")
     def test_log_auxiliary_location(self):
         msg = asl.aslmsg(asl.ASL_TYPE_MSG)
         msg[asl.ASL_KEY_MSG] = 'hello world'

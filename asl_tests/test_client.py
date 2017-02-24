@@ -2,6 +2,7 @@ import unittest
 import sys
 import os
 import platform
+from distutils.version import LooseVersion
 
 import asl
 
@@ -127,7 +128,7 @@ class TestASLClient (unittest.TestCase):
         msg.set_query(asl.ASL_KEY_FACILITY, "com.apple.console", asl.ASL_QUERY_OP_EQUAL)
         self.assertNotEqual(list(cli.search(msg)), [])
 
-    @unittest.skipUnless(platform.mac_ver()[0] >= "10.8", "Requires OSX 10.8")
+    @unittest.skipUnless(LooseVersion(platform.mac_ver()[0]) >= LooseVersion("10.8"), "Requires OSX 10.8")
     def test_redirection(self):
         cli = asl.aslclient("ident", "facility", 0)
         self.assertIsInstance(cli, asl.aslclient)
@@ -150,14 +151,14 @@ class TestASLClient (unittest.TestCase):
         msg[asl.ASL_KEY_FACILITY] = "com.apple.console"
         cli.log_descriptor(msg, asl.ASL_LEVEL_NOTICE, fd, asl.ASL_LOG_DESCRIPTOR_WRITE)
 
-    @unittest.skipUnless(platform.mac_ver()[0] < "10.8", "Requires OSX 10.8")
+    @unittest.skipUnless(LooseVersion(platform.mac_ver()[0]) < LooseVersion("10.8"), "Requires OSX 10.8")
     def test_no_redirection(self):
         cli = asl.aslclient("ident", "facility", 0)
         self.assertIsInstance(cli, asl.aslclient)
 
         self.assertFalse(hasattr(cli, 'log_descriptor'))
 
-    @unittest.skipUnless(platform.mac_ver()[0] >= "10.7", "Requires OSX 10.7")
+    @unittest.skipUnless(LooseVersion(platform.mac_ver()[0]) >= LooseVersion("10.7"), "Requires OSX 10.7")
     def test_open_from_file(self):
         try:
             fd = os.open("asl.log", os.O_RDWR|os.O_CREAT, 0o660)
@@ -173,7 +174,7 @@ class TestASLClient (unittest.TestCase):
             if os.path.exists("asl.log"):
                 os.unlink("asl.log")
 
-    @unittest.skipUnless(platform.mac_ver()[0] < "10.7", "Requires OSX 10.7")
+    @unittest.skipUnless(LooseVersion(platform.mac_ver()[0]) < LooseVersion("10.7"), "Requires OSX 10.7")
     def test_no_open_from_file(self):
         self.assertFalse(hasattr(asl, 'open_from_file'))
 
