@@ -2,6 +2,7 @@ doc/_build
 asl.egg-info
 build
 dist
+.tox
 
 syntax: glob
 *.dSYM
