@@ -2,7 +2,7 @@ ASL -- Apple System Log facility
 =================================
 
 This package implements bindings to the ASL
-library on Mac OS X 10.4 or later. The ASL
+library on macOS 10.4 or later. The ASL
 library is a low-level logging library, meant
 as a replacement for the syslog API.
 
@@ -11,6 +11,11 @@ or later. The library itself should also work
 with Python 2.6 and 3.0, the command-line interface
 ("python3 -m asl") uses features introduced in
 Python 2.7 and 3.2.
+
+.. note::
+
+   The ASL library itself is deprecated on macOS 10.12
+   and is replaced by the os_log library.
 
 
 Contents:
