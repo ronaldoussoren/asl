@@ -170,6 +170,23 @@ def _as_requires(value):
         requires.append(_map_requirement(req))
     return requires
 
+def _extract_extension(cfg, extname):
+    sect = 'Extension:%s'%(extname,)
+    if not cfg.has_section(sect):
+        return None
+
+    if not cfg.has_option(sect, 'source'):
+        return None
+
+    sources = _as_list(cfg.get(sect, 'source'))
+    kwds = {}
+
+    _opt_value(cfg, kwds, sect, 'extra_compile_args', _as_list)
+    _opt_value(cfg, kwds, sect, 'extra_link_args', _as_list)
+
+    return ((extname, sources), kwds)
+
+
 def parse_setup_cfg():
     cfg = RawConfigParser()
     r = cfg.read([os.path.join(ROOTDIR, 'setup.cfg')])
@@ -257,6 +274,18 @@ def parse_setup_cfg():
             metadata['tests_require'] += ", unittest2"
         except KeyError:
             metadata['tests_require'] = "unittest2"
+
+    if cfg.has_option('metadata', 'ext_modules'):
+        extensions = []
+        for ext in _as_list(cfg.get('metadata', 'ext_modules')):
+            ext = _extract_extension(cfg, ext)
+            if ext is not None:
+                extensions.append(ext)
+
+        if extensions:
+            metadata['ext_modules'] = [
+                Extension(*args, **kwds) for (args, kwds) in extensions ]
+
 
     return metadata
 
@@ -530,7 +559,7 @@ try:
 except ImportError:
     use_setuptools()
 
-from setuptools import setup
+from setuptools import setup, Extension
 
 try:
     from distutils.core import PyPIRCCommand
