@@ -6,6 +6,8 @@ asl 1.0.2
 
 * Fixes some packaging issues
 
+* Updates constants for macOS 10.12
+
 asl 1.0
 -------
 

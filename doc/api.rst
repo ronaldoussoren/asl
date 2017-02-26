@@ -527,9 +527,37 @@ by the ASL backend.
 
    Sender instance UUID.
 
+.. data:: ASL_KEY_SENDER_MACH_UUID
+
+   Sender Mach-O UUID
+
+.. data:: ASL_KEY_FINAL_NOTIFICATION
+
+   Syslogd posts value as a notification when message has been processed.
+
+.. data:: ASL_KEY_OS_ACTIVITY_ID
+
+   Current OS Activity for the logging thread.
+
+
+Match directions
+................
+
+.. data:: ASL_MATCH_DIRECTION_FORWARD
+
+   Match in forward direction.
+
+.. data:: ASL_MATCH_DIRECTION_REVERSE
+
+   Match in reverse direction.
+
 
 Message types
 .............
+
+.. data:: ASL_TYPE_UNDEF
+
+   Undefined type
 
 .. data:: ASL_TYPE_MSG
 
@@ -538,6 +566,87 @@ Message types
 .. data:: ASL_TYPE_QUERY
 
    A query message.
+
+.. data:: ASL_TYPE_LIST
+
+   A list of messages or queries
+
+.. data:: ASL_TYPE_FILE
+
+   Abstraction for a ASL data file.
+
+.. data:: ASL_TYPE_STORE
+
+   Abstraction for an ASL data store (directory containing data files)
+
+.. data:: ASL_TYPE_CLIENT
+
+    High-level objet that abstracts ASL interactions.
+
+
+Message encoding
+................
+
+.. data:: ASL_ENCODE_NONE
+
+   Don't escape characters
+
+.. data:: ASL_ENCODE_SAFE
+
+   Escapes backspace as "^H", replaces carriage returns by newlines,
+   add tabs after newlines to indent continued message text.
+
+.. data:: ASL_ENCODE_ASL
+
+   Use C style encoding for a subset of non-printable characters, like
+   the vis(1) command with the "-c" option.
+
+.. data:: ASL_ENCODE_XML
+
+   Encode message as XML text.
+
+File message formats
+....................
+
+.. data:: ASL_MSG_FMT_RAW
+
+   Complete message structure with key-value pairs in square brackets.
+
+.. data:: ASL_MSG_FMT_STD
+
+   Simular to ``ASL_MSG_FMT_BSD``, but with message priority.
+
+.. data:: ASL_MSG_FMT_BSD
+
+   Format used by the syslog daemon for system log files.
+
+.. data:: ASL_MSG_FMT_XML
+
+   Formatted as XML property lists.
+
+.. data:: ASL_MSG_FMT_MSG
+
+   (Undocumented format)
+
+
+
+
+File time formats
+.................
+
+.. data:: ASL_TIME_FMT_SEC
+
+   Show timestamps as seconds since the epoch.
+
+
+.. data:: ASL_TIME_FMT_UTC
+
+   Show timestamps in UTC in the format "yyyy-mm-dd hh:mm:ssZ".
+
+.. data:: ASL_TIME_FMT_LCL
+
+   Show timestaps in the local timezone with format "mmm dd hh:mm:ss".
+
 
 
 Filter masks

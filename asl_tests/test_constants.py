@@ -63,10 +63,42 @@ class TestConstant (unittest.TestCase):
         self.assertEqual(asl.ASL_KEY_AUX_DATA, "ASLAuxData")
         self.assertEqual(asl.ASL_KEY_OPTION, "ASLOption")
         self.assertEqual(asl.ASL_KEY_SENDER_INSTANCE, "SenderInstance")
+        self.assertEqual(asl.ASL_KEY_SENDER_MACH_UUID, "SenderMachUUID")
+        self.assertEqual(asl.ASL_KEY_FINAL_NOTIFICATION, "ASLFinalNotification")
+        self.assertEqual(asl.ASL_KEY_OS_ACTIVITY_ID, "OSActivityID")
 
     def test_message_types(self):
+        self.assertEqual(asl.ASL_TYPE_UNDEF, 0xffffffff)
         self.assertEqual(asl.ASL_TYPE_MSG, 0)
         self.assertEqual(asl.ASL_TYPE_QUERY, 1)
+        self.assertEqual(als.ASL_TYPE_LIST, 2)
+        self.assertEqual(als.ASL_TYPE_FILE, 3)
+        self.assertEqual(als.ASL_TYPE_STORE, 4)
+        self.assertEqual(als.ASL_TYPE_CLIENT, 5)
+
+    def test_match_directions(self):
+        self.assertEqual(asl.ASL_MATCH_DIRECTION_FORWARD, 1)
+        self.assertEqual(asl.ASL_MATCH_DIRECTION_REVERSE, -1)
+
+    def test_open_options(self):
+        self.assertEqual(asl.ASL_OPT_OPEN_WRITE, 0x00000001)
+        self.assertEqual(asl.ASL_OPT_CREATE_STORE, 0x00000002)
+
+    def test_format_options(self):
+        self.assertEqual(asl.ASL_MSG_FMT_RAW, "raw")
+        self.assertEqual(asl.ASL_MSG_FMT_STD, "std")
+        self.assertEqual(asl.ASL_MSG_FMT_BSD, "bsd")
+        self.assertEqual(asl.ASL_MSG_FMT_XML, "xml")
+        self.assertEqual(asl.ASL_MSG_FMT_MSG, "msg")
+        self.assertEqual(asl.ASL_TIME_FMT_SEC, "sec")
+        self.assertEqual(asl.ASL_TIME_FMT_UTC, "utc")
+        self.assertEqual(asl.ASL_TIME_FMT, "lcl")
+
+    def test_encode_options(self):
+        self.assertEqual(asl.ASL_ENCODE_NONE, 0)
+        self.assertEqual(asl.ASL_ENCODE_SAFE, 1)
+        self.assertEqual(asl.ASL_ENCODE_ASL, 2)
+        self.assertEqual(asl.ASL_ENCODE_XML, 3)
 
     def test_filter_masks(self):
         self.assertEqual(asl.ASL_FILTER_MASK_EMERG, 0x01)
