@@ -1,6 +1,20 @@
 Release history
 ===============
 
+asl 1.1
+-------
+
+* Removed support for Python 2.7 and older Python 3 versions
+
+* Added support for Python 3.6, 3.7 and 3.8
+
+* Migrated to GitHub
+
+* Added type annotations
+
+* Better code quality through flake8, isort, black and mypy
+
+
 asl 1.0.2
 ---------
 

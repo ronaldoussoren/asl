@@ -3,7 +3,7 @@ import unittest
 import asl
 
 
-class TestConstant (unittest.TestCase):
+class TestConstant(unittest.TestCase):
     def test_query_options(self):
         self.assertEqual(asl.ASL_QUERY_OP_CASEFOLD, 0x0010)
         self.assertEqual(asl.ASL_QUERY_OP_PREFIX, 0x0020)
@@ -68,13 +68,13 @@ class TestConstant (unittest.TestCase):
         self.assertEqual(asl.ASL_KEY_OS_ACTIVITY_ID, "OSActivityID")
 
     def test_message_types(self):
-        self.assertEqual(asl.ASL_TYPE_UNDEF, 0xffffffff)
+        self.assertEqual(asl.ASL_TYPE_UNDEF, 0xFFFFFFFF)
         self.assertEqual(asl.ASL_TYPE_MSG, 0)
         self.assertEqual(asl.ASL_TYPE_QUERY, 1)
-        self.assertEqual(als.ASL_TYPE_LIST, 2)
-        self.assertEqual(als.ASL_TYPE_FILE, 3)
-        self.assertEqual(als.ASL_TYPE_STORE, 4)
-        self.assertEqual(als.ASL_TYPE_CLIENT, 5)
+        self.assertEqual(asl.ASL_TYPE_LIST, 2)
+        self.assertEqual(asl.ASL_TYPE_FILE, 3)
+        self.assertEqual(asl.ASL_TYPE_STORE, 4)
+        self.assertEqual(asl.ASL_TYPE_CLIENT, 5)
 
     def test_match_directions(self):
         self.assertEqual(asl.ASL_MATCH_DIRECTION_FORWARD, 1)
@@ -84,6 +84,10 @@ class TestConstant (unittest.TestCase):
         self.assertEqual(asl.ASL_OPT_OPEN_WRITE, 0x00000001)
         self.assertEqual(asl.ASL_OPT_CREATE_STORE, 0x00000002)
 
+        self.assertEqual(asl.ASL_OPT_STDERR, 0x00000001)
+        self.assertEqual(asl.ASL_OPT_NO_DELAY, 0x00000002)
+        self.assertEqual(asl.ASL_OPT_NO_REMOTE, 0x00000004)
+
     def test_format_options(self):
         self.assertEqual(asl.ASL_MSG_FMT_RAW, "raw")
         self.assertEqual(asl.ASL_MSG_FMT_STD, "std")
@@ -92,7 +96,7 @@ class TestConstant (unittest.TestCase):
         self.assertEqual(asl.ASL_MSG_FMT_MSG, "msg")
         self.assertEqual(asl.ASL_TIME_FMT_SEC, "sec")
         self.assertEqual(asl.ASL_TIME_FMT_UTC, "utc")
-        self.assertEqual(asl.ASL_TIME_FMT, "lcl")
+        self.assertEqual(asl.ASL_TIME_FMT_LCL, "lcl")
 
     def test_encode_options(self):
         self.assertEqual(asl.ASL_ENCODE_NONE, 0)
@@ -110,16 +114,10 @@ class TestConstant (unittest.TestCase):
         self.assertEqual(asl.ASL_FILTER_MASK_INFO, 0x40)
         self.assertEqual(asl.ASL_FILTER_MASK_DEBUG, 0x80)
 
-    def test_open_options(self):
-        self.assertEqual(asl.ASL_OPT_STDERR, 0x00000001)
-        self.assertEqual(asl.ASL_OPT_NO_DELAY, 0x00000002)
-        self.assertEqual(asl.ASL_OPT_NO_REMOTE, 0x00000004)
-
     def test_descriptor_types(self):
         self.assertEqual(asl.ASL_LOG_DESCRIPTOR_READ, 1)
         self.assertEqual(asl.ASL_LOG_DESCRIPTOR_WRITE, 2)
 
+
 if __name__ == "__main__":
     unittest.main()
-
-

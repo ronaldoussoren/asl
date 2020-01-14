@@ -1,7 +1,8 @@
 import logging
-import asl
-import sys
 import os
+import sys
+
+import asl
 
 _LOGGING2ASL = {
     logging.DEBUG: asl.ASL_STRING_DEBUG,
@@ -11,17 +12,20 @@ _LOGGING2ASL = {
     logging.CRITICAL: asl.ASL_STRING_CRIT,
     logging.FATAL: asl.ASL_STRING_ALERT,
 }
-def _logging2asl(lvl):
+
+
+def _logging2asl(lvl: int):
     try:
         return _LOGGING2ASL[lvl]
     except KeyError:
         r = asl.ASL_STRING_DEBUG
         for k in sorted(_LOGGING2ASL):
-           if k < lvl:
-               r = _LOGGING2ASL[k]
+            if k < lvl:
+                r = _LOGGING2ASL[k]
         return r
 
-class ASLConsoleHandler (logging.Handler):
+
+class ASLConsoleHandler(logging.Handler):
     def __init__(self, ident=None, level=asl.ASL_STRING_INFO):
         logging.Handler.__init__(self)
         self._asl = asl.aslclient(ident, level, 0)
@@ -32,10 +36,18 @@ class ASLConsoleHandler (logging.Handler):
         # Add all attributes of the logging record
         # to the ASL log message:
         for k in dir(record):
-            if k in ('args', 'levelno', 'levelname', 'msecs', 'relativeCreated', 'asctime', 'created'):
-               continue
-            if k.startswith('_'):
-               continue
+            if k in (
+                "args",
+                "levelno",
+                "levelname",
+                "msecs",
+                "relativeCreated",
+                "asctime",
+                "created",
+            ):
+                continue
+            if k.startswith("_"):
+                continue
 
             # What about exc_info?
 
@@ -48,6 +60,7 @@ class ASLConsoleHandler (logging.Handler):
         msg[asl.ASL_KEY_MSG] = self.format(record)
 
         self._asl.send(msg)
+
 
 logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
 root = logging.getLogger()

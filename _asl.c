@@ -222,10 +222,6 @@ message_getitem(PyObject* self, PyObject* key)
             return NULL;
         }
 
-#if PY_MAJOR_VERSION == 2
-    } else if (PyString_Check(key)) {
-        c_key = PyString_AsString(key);
-#endif
     } else {
         PyErr_SetObject(PyExc_KeyError, key);
         return NULL;
@@ -263,10 +259,6 @@ message_setitem(PyObject* self, PyObject* key, PyObject* value)
             return -1;
         }
 
-#if PY_MAJOR_VERSION == 2
-    } else if (PyString_Check(key)) {
-        c_key = PyString_AsString(key);
-#endif
     } else {
         PyErr_Format(PyExc_TypeError, "Expecting a string, got instance of '%s'", Py_TYPE(key)->tp_name);
         return -1;
@@ -295,10 +287,6 @@ message_setitem(PyObject* self, PyObject* key, PyObject* value)
             return -1;
         }
 
-#if PY_MAJOR_VERSION == 2
-    } else if (PyString_Check(value)) {
-        c_value = PyString_AsString(value);
-#endif
     } else {
         PyErr_Format(PyExc_TypeError, "Expecting a string, got instance of '%s'", Py_TYPE(value)->tp_name);
         Py_XDECREF(key_bytes);
@@ -338,11 +326,7 @@ message_keys(PyObject* self)
             break;
         }
 
-#if PY_MAJOR_VERSION == 2
-        o = PyString_FromString(key);
-#else
         o = PyUnicode_FromString(key);
-#endif
         if (o == NULL) {
             Py_DECREF(result);
             return NULL;
@@ -390,11 +374,7 @@ message_asdict(PyObject* self)
         }
 
 
-#if PY_MAJOR_VERSION == 2
-        o = PyString_FromString(value);
-#else
         o = PyUnicode_FromString(value);
-#endif
         if (o == NULL) {
             Py_DECREF(result);
             return NULL;
@@ -947,79 +927,6 @@ static PyMethodDef mod_methods[] = {
 
 /* Module init */
 
-static int
-setup_module(PyObject* m)
-{
-    if (PyType_Ready(&ASLResponseType) < 0) {
-        return -1;
-    }
-    if (PyType_Ready(&ASLMessageType) < 0) {
-        return -1;
-    }
-    if (PyType_Ready(&ASLClientType) < 0) {
-        return -1;
-    }
-
-#if (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_8) && (MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_8)
-    if (asl_log_descriptor == NULL) {
-        if (PyDict_DelItemString(ASLClientType.tp_dict, "log_descriptor") < 0) {
-            return -1;
-        }
-    }
-#endif
-
-#if (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_7) && (MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_7)
-    if (asl_create_auxiliary_file == NULL) {
-        if (PyDict_DelItemString(PyModule_GetDict(m), "create_auxiliary_file") < 0) {
-            return -1;
-        }
-        if (PyDict_DelItemString(PyModule_GetDict(m), "close_auxiliary_file") < 0) {
-            return -1;
-        }
-    }
-    if (asl_log_auxiliary_location == NULL) {
-        if (PyDict_DelItemString(PyModule_GetDict(m), "log_auxiliary_location") < 0) {
-            return -1;
-        }
-    }
-    if (asl_open_from_file == NULL) {
-        if (PyDict_DelItemString(PyModule_GetDict(m), "open_from_file") < 0) {
-            return -1;
-        }
-    }
-
-#endif
-
-    if (PyModule_AddObject(m, "aslresponse", (PyObject*)&ASLResponseType) < 0) {
-        return -1;
-    }
-    if (PyModule_AddObject(m, "aslmsg", (PyObject*)&ASLMessageType) < 0) {
-        return -1;
-    }
-    if (PyModule_AddObject(m, "aslclient", (PyObject*)&ASLClientType) < 0) {
-        return -1;
-    }
-
-    return 0;
-}
-
-
-#if PY_MAJOR_VERSION == 2
-PyMODINIT_FUNC
-init_asl(void)
-{
-    PyObject* m;
-
-    m = Py_InitModule("asl._asl", mod_methods);
-    if (m == NULL) {
-        return;
-    }
-
-    (void)setup_module(m);
-}
-
-#else /* PY_MAJOR_VERSION == 3 */
-
 static PyModuleDef aslmodule = {
     PyModuleDef_HEAD_INIT,
     "asl._asl",
@@ -1038,10 +945,54 @@ PyInit__asl(void)
         return NULL;
     }
 
-    if (setup_module(m) < 0) {
-        Py_DECREF(m);
+    if (PyType_Ready(&ASLResponseType) < 0) {
         return NULL;
     }
+    if (PyType_Ready(&ASLMessageType) < 0) {
+        return NULL;
+    }
+    if (PyType_Ready(&ASLClientType) < 0) {
+        return NULL;
+    }
+
+#if (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_8) && (MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_8)
+    if (asl_log_descriptor == NULL) {
+        if (PyDict_DelItemString(ASLClientType.tp_dict, "log_descriptor") < 0) {
+            return NULL;
+        }
+    }
+#endif
+
+#if (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_7) && (MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_7)
+    if (asl_create_auxiliary_file == NULL) {
+        if (PyDict_DelItemString(PyModule_GetDict(m), "create_auxiliary_file") < 0) {
+            return NULL;
+        }
+        if (PyDict_DelItemString(PyModule_GetDict(m), "close_auxiliary_file") < 0) {
+            return NULL;
+        }
+    }
+    if (asl_log_auxiliary_location == NULL) {
+        if (PyDict_DelItemString(PyModule_GetDict(m), "log_auxiliary_location") < 0) {
+            return NULL;
+        }
+    }
+    if (asl_open_from_file == NULL) {
+        if (PyDict_DelItemString(PyModule_GetDict(m), "open_from_file") < 0) {
+            return NULL;
+        }
+    }
+#endif
+
+    if (PyModule_AddObject(m, "aslresponse", (PyObject*)&ASLResponseType) < 0) {
+        return NULL;
+    }
+    if (PyModule_AddObject(m, "aslmsg", (PyObject*)&ASLMessageType) < 0) {
+        return NULL;
+    }
+    if (PyModule_AddObject(m, "aslclient", (PyObject*)&ASLClientType) < 0) {
+        return NULL;
+    }
+
     return m;
 }
-#endif /* PY_MAJOR_VERSION == 3 */

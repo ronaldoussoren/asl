@@ -3,8 +3,12 @@ asl.egg-info
 build
 dist
 .tox
+.coverage
+.mypy_cache
+htmlcov
 
 syntax: glob
+.coverage*
 *.dSYM
 *.pyc
 *.pyo
