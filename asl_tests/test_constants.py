@@ -62,6 +62,7 @@ class TestConstant(unittest.TestCase):
         self.assertEqual(asl.ASL_KEY_AUX_URL, "ASLAuxURL")
         self.assertEqual(asl.ASL_KEY_AUX_DATA, "ASLAuxData")
         self.assertEqual(asl.ASL_KEY_OPTION, "ASLOption")
+        self.assertEqual(asl.ASL_KEY_MODULE, "ASLModule")
         self.assertEqual(asl.ASL_KEY_SENDER_INSTANCE, "SenderInstance")
         self.assertEqual(asl.ASL_KEY_SENDER_MACH_UUID, "SenderMachUUID")
         self.assertEqual(asl.ASL_KEY_FINAL_NOTIFICATION, "ASLFinalNotification")
@@ -117,6 +118,9 @@ class TestConstant(unittest.TestCase):
     def test_descriptor_types(self):
         self.assertEqual(asl.ASL_LOG_DESCRIPTOR_READ, 1)
         self.assertEqual(asl.ASL_LOG_DESCRIPTOR_WRITE, 2)
+
+    def test_api_version(self):
+        self.assertEqual(asl.ASL_API_VERSION, 20150225)
 
 
 if __name__ == "__main__":

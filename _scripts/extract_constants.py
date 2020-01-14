@@ -68,15 +68,15 @@ with open(
     ),
     "w",
 ) as fp:
-    print("'''", file=fp)
+    print('"""', file=fp)
     print("ASL constant definitions", file=fp)
     print("", file=fp)
     print("THIS FILE IS GENERATED, DON'T UPDATE MANUALLY", file=fp)
-    print("'''", file=fp)
+    print('"""', file=fp)
     print("", file=fp)
 
     for key, literal_value in literals:
-        if isinstance(value, str):
+        if isinstance(literal_value, str):
             print('%s = "%s"' % (key, literal_value), file=fp)
         else:
             print("%s = %r" % (key, literal_value), file=fp)
